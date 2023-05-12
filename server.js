@@ -1,7 +1,6 @@
 // Import Express.js
 const express = require('express');
 // Import built-in Node.js package 'path' to resolve path of files that are located on the server
-const getNotes = require('./public/assests/js/index');
 const path = require('path');
 
 const fs = require('fs');
@@ -13,6 +12,11 @@ const app = express();
 
 // Specify on which port the Express.js server will run
 const PORT = 3001;
+
+const getNotes = () => {
+  const notes = fs.readFileSync(path.resolve(__dirname, './db.json'), {encoding: 'utf-8'});
+return JSON.parse(notes);
+};
 
 // Static middleware pointing to the public folder
 app.use(express.static("public"));
@@ -27,7 +31,7 @@ app.use(express.json());
 // Create Express.js routes for default '/', '/send' and '/routes' endpoints
 app.get('/', (req, res) => res.send('Navigate to /send or /routes'));
 
-app.get('/api/notes', (req, res) => res.json (getNotes));
+app.get('/api/notes', (req, res) => res.json (getNotes()));
 
 app.get('/index', (req, res) =>
   res.sendFile(path.join(__dirname, 'public/index.html'))
