@@ -2,7 +2,7 @@
 const express = require('express');
 // Import built-in Node.js package 'path' to resolve path of files that are located on the server
 const path = require('path');
-
+const api = require('./routes/api_routes');
 const fs = require('fs');
 // const html_routes = require('./Assets/routes/html_routes')
 // const api_routes = require('./Assets/routes/api_routes')
@@ -14,7 +14,7 @@ const app = express();
 const PORT = 3001;
 
 const getNotes = () => {
-  const notes = fs.readFileSync(path.resolve(__dirname, './db.json'), {encoding: 'utf-8'});
+  const notes = fs.readFileSync(path.resolve(__dirname, './db/db.json'), {encoding: 'utf-8'});
 return JSON.parse(notes);
 };
 
@@ -26,12 +26,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // app.use(html_routes)
-// app.use(api_routes)
+app.use("/", api);
 
 // Create Express.js routes for default '/', '/send' and '/routes' endpoints
 app.get('/', (req, res) => res.send('Navigate to /send or /routes'));
 
-app.get('/api/notes', (req, res) => res.json (getNotes()));
+app.get('/api/notes', (req, res) => res.json(getNotes()));
 
 app.get('/index', (req, res) =>
   res.sendFile(path.join(__dirname, 'public/index.html'))
