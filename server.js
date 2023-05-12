@@ -11,7 +11,7 @@ const fs = require('fs');
 const app = express();
 
 // Specify on which port the Express.js server will run
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 const getNotes = () => {
   const notes = fs.readFileSync(path.resolve(__dirname, './db/db.json'), {encoding: 'utf-8'});
